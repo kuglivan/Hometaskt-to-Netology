@@ -53,7 +53,7 @@ class Student:
                        f' больше чем средняя оценка {self.name}({self.average_grade_to_student()})'
 
             else:
-                return f'Средние оценки лекторов одинаковы({self.average_grade_to_student()})'
+                return f'Средние оценки студентов {self.name} и {student.name} одинаковы({self.average_grade_to_student()})'
 
         else:
             return 'Ошибка'
@@ -143,63 +143,71 @@ def average_grades_of_all_lecturers(list_of_lecturers: list, course):
 
 
 
-
+# Создание студентов, с их пройденными курсами и курсами в процессе изучения:
 Peter = Student('Peter', 'Johnson', 'male')
 Peter.courses_in_progress += ['Python']
 Peter.courses_in_progress += ['Java']
+Peter.add_courses('Django')
 
 Emily = Student('Emily', 'Bott', 'female')
 Emily.courses_in_progress += ['Web-development']
 Emily.courses_in_progress += ['Java']
-Emily.courses_in_progress += ['Django']
-Emily.courses_in_progress += ['Git and Github']
+Emily.add_courses('Git and Github')
 
-
+# Создание лекторов, с курсами, которые они преподают:
 Christian = Lecturer('Christian', 'Andersen')
 Christian.courses_attached += ['Python']
 Christian.courses_attached += ['Java']
 
 Jordan = Lecturer('Jordan', 'Green')
 Jordan.courses_attached += ['Django']
-Jordan.courses_attached += ['Git and Github']
 Jordan.courses_attached += ['Python']
+Jordan.courses_attached += ['Web-development']
 
-
+# Создание проверяющих, с курсами, которые они проверяют:
 Mark = Reviewer('Mark', 'Adrian')
-Mark.courses_attached += ['Java']
-Mark.courses_attached += ['Django']
 Mark.courses_attached += ['Python']
 Mark.courses_attached += ['Git and Github']
+Mark.courses_attached += ['Web-development']
 
 Theodore = Reviewer('Theodore', 'Higgins')
 Theodore.courses_attached += ['Java']
 Theodore.courses_attached += ['Django']
-Theodore.courses_attached += ['Python']
 Theodore.courses_attached += ['Git and Github']
 
-mark.rate_hw_to_student(jacob, 'Java', 5)
-mark.rate_hw_to_student(jacob, 'Java', 4)
-mark.rate_hw_to_student(jacob, 'Django', 5)
-mark.rate_hw_to_student(peter, 'Java', 5)
-mark.rate_hw_to_student(emily, 'Java', 7)
 
-peter.rate_hw_to_lecturer(christian, 'Python', 4)
-peter.rate_hw_to_lecturer(jordan, 'Python', 3)
-peter.rate_hw_to_lecturer(christian, 'Java', 5)
+#Выставление оценок студентам:
+Mark.rate_hw_to_student(Peter, 'Python', 7)
+Mark.rate_hw_to_student(Emily, 'Web-development', 10)
+Theodore.rate_hw_to_student(Peter, 'Java', 9)
+Theodore.rate_hw_to_student(Emily, 'Java', 6)
 
-emily.rate_hw_to_lecturer(jordan, 'Django', 9)
-emily.rate_hw_to_lecturer(jordan, 'Git and Github', 5)
+#Выставление оценок лекторам:
+Peter.rate_hw_to_lecturer(Christian, 'Python', 3)
+Peter.rate_hw_to_lecturer(Jordan, 'Python', 10)
+Emily.rate_hw_to_lecturer(Jordan, 'Web-development', 7)
+Peter.rate_hw_to_lecturer(Christian, 'Java', 8)
+Emily.rate_hw_to_lecturer(Christian, 'Java', 2)
 
-print(average_grades_of_all_lecturers([jordan, christian], 'Python'))
-print(average_grades_of_all_students([emily, peter], 'Java'))
+#Перегрузка магического метода __str__ у студентов:
+print(f'\n{Peter}')
+print(f'\n{Emily}')
+#Перегрузка магического метода __str__ у лекторов:
+print(f'\n{Christian}')
+print(f'\n{Jordan}')
+#Перегрузка магического метода __str__ у проверяющих:
+print(f'\n{Mark}')
+print(f'\n{Theodore}')
 
-print(f'{christian.name} {christian.surname}: {christian.grades_to_lecturer}')
-print(f'{jacob.name} {jacob.surname}: {jacob.grades}')
-print(f'{jordan.name} {jordan.surname}: {jordan.grades_to_lecturer}')
-print(f'{peter.name} {peter.surname}: {peter.grades}')
+#Сравнение студентов и лекторов между собой:
+print(f'\n\n{Peter.comparison(Emily)}')
+print(f'\n{Christian.comparison(Jordan)}')
 
-print(f'\n{jacob}')
-print(f'\n{christian}')
+#Подсчёт средней оценки у студентов и лекторов в рамках их общего курса:
+print(f'\n\nСредняя оценка у студентов {Emily.name} {Emily.surname} и {Peter.name} {Peter.surname} за модуль "Java": {average_grades_of_all_students([Emily, Peter], "Java")}')
+print(f'\nСредняя оценка у лекторов {Christian.name} {Christian.surname} и {Jordan.name} {Jordan.surname} за модуль "Python":  {average_grades_of_all_lecturers([Jordan, Christian], "Python")}')
 
-print(peter.comparison(jacob))
-print(christian.comparison(jordan))
+
+
+
+
