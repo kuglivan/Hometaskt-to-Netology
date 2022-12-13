@@ -42,21 +42,33 @@ class Student:
               f'Завершенные курсы: {finished_courses_string}'
         return res
 
-    def comparison(self, student):
+    def __lt__(self, student):
         if isinstance(student, Student):
-            if self.average_grade_to_student() > student.average_grade_to_student():
-                return f'Средняя оценка {self.name}({self.average_grade_to_student()})' \
-                       f' больше чем средняя оценка {student.name}({student.average_grade_to_student()})'
-
-            elif self.average_grade_to_student() < student.average_grade_to_student():
-                return f'Средняя оценка {student.name}({student.average_grade_to_student()})' \
-                       f' больше чем средняя оценка {self.name}({self.average_grade_to_student()})'
-
-            else:
-                return f'Средние оценки студентов {self.name} и {student.name} одинаковы({self.average_grade_to_student()})'
-
+            return self.average_grade_to_student() < student.average_grade_to_student()
         else:
             return 'Ошибка'
+
+    def __eq__(self, student):
+        if isinstance(student, Student):
+            return self.average_grade_to_student() == student.average_grade_to_student()
+        else:
+            return 'Ошибка'
+
+
+    def comparison(self, student):
+
+        if self.__lt__(student) == True:
+            return f'Средняя оценка {student.name}({student.average_grade_to_student()})' \
+                   f' больше чем средняя оценка {self.name}({self.average_grade_to_student()})'
+
+        if self.__lt__(student) == False:
+
+            if self.__eq__(student) == True:
+                return f'Средние оценки студентов {self.name} и {student.name} одинаковы({self.average_grade_to_student()})'
+
+            else:
+                return f'Средняя оценка {self.name}({self.average_grade_to_student()})' \
+                   f' больше чем средняя оценка {student.name}({student.average_grade_to_student()})'
 
 class Mentor:
 
@@ -88,22 +100,33 @@ class Lecturer(Mentor):
         res = f'Имя: {self.name}\nФамилия: {self.surname}\nСредняя оценка за лекции: {self.average_grade_to_lecturer()}'
         return res
 
+    def __lt__(self, lecturer):
+        if isinstance(lecturer, Lecturer):
+            return self.average_grade_to_lecturer() < lecturer.average_grade_to_lecturer()
+        else:
+            return 'Ошибка'
+
+    def __eq__(self, lecturer):
+        if isinstance(lecturer, Lecturer):
+            return self.average_grade_to_lecturer() == lecturer.average_grade_to_lecturer()
+        else:
+            return 'Ошибка'
+
     def comparison(self, lecturer):
 
-        if isinstance(lecturer, Lecturer):
-            if self.average_grade_to_lecturer() > lecturer.average_grade_to_lecturer():
+        if self.__lt__(lecturer) == True:
+            return f'Средняя оценка {lecturer.name}({lecturer.average_grade_to_lecturer()})' \
+                   f' больше чем средняя оценка {self.name}({self.average_grade_to_lecturer()})'
+
+        if self.__lt__(lecturer) == False:
+
+            if self.__eq__(lecturer) == True:
+                return f'Средние оценки студентов {self.name} и {lecturer.name} одинаковы({self.average_grade_to_lecturer()})'
+
+            else:
                 return f'Средняя оценка {self.name}({self.average_grade_to_lecturer()})' \
                        f' больше чем средняя оценка {lecturer.name}({lecturer.average_grade_to_lecturer()})'
 
-            elif self.average_grade_to_lecturer() < lecturer.average_grade_to_lecturer():
-                return f'Средняя оценка {lecturer.name}({lecturer.average_grade_to_lecturer()})' \
-                       f' больше чем средняя оценка {self.name}({self.average_grade_to_lecturer()})'
-
-            else:
-                return f'Средние оценки лекторов одинаковы({self.average_grade_to_lecturer()})'
-
-        else:
-            return 'Ошибка'
 
 
 class Reviewer(Mentor):
@@ -207,7 +230,9 @@ print(f'\n{Christian.comparison(Jordan)}')
 print(f'\n\nСредняя оценка у студентов {Emily.name} {Emily.surname} и {Peter.name} {Peter.surname} за модуль "Java": {average_grades_of_all_students([Emily, Peter], "Java")}')
 print(f'\nСредняя оценка у лекторов {Christian.name} {Christian.surname} и {Jordan.name} {Jordan.surname} за модуль "Python":  {average_grades_of_all_lecturers([Jordan, Christian], "Python")}')
 
-
-
-
-
+print(Peter.__lt__(Emily))
+#f'Средняя оценка {self.name}({self.average_grade_to_student()})' \
+#                       f' больше чем средняя оценка {student.name}({student.average_grade_to_student()})'
+#f'Средняя оценка {student.name}({student.average_grade_to_student()})' \
+#                       f' больше чем средняя оценка {self.name}({self.average_grade_to_student()})'
+#f'Средние оценки студентов {self.name} и {student.name} одинаковы({self.average_grade_to_student()})'#
